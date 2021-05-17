@@ -7,7 +7,7 @@ import fake_useragent
 
 
 def request(url, head=None):
-    r = requests.get(url, headers=head, auth=HTTPBasicAuth("*", "*"))
+    r = requests.get(url, headers=head, auth=HTTPBasicAuth("username", "password"))
     sleep(2)
     return r
 
