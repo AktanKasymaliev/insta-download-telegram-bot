@@ -1,30 +1,37 @@
-import requests
-from requests.auth import HTTPBasicAuth
 from bs4 import BeautifulSoup as bs
-from time import sleep
-import datetime
-import fake_useragent
+from time import sleep, time
+import os, fake_useragent, datetime, requests
+from threading import Thread
+
 
 
 def request(url, head=None):
-    r = requests.get(url, headers=head, auth=HTTPBasicAuth("username", "password"))
-    sleep(2)
+    r = requests.get(url, headers=head)
     return r
+
+def delete_file(filename):
+    os.remove(filename)
 
 def write_file(file_name):
     file_format = file_name.split('/')[-1].split('?')[0].split('.')[-1]
     created_name = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
-    with open(f"{created_name}.{file_format}", 'wb') as file:
+    full_name = f"{created_name}.{file_format}"
+    with open(full_name, 'wb') as file:
         file.write(request(file_name).content)
+    return full_name  
 
-while True:
-    fake_headers=fake_useragent.UserAgent().random
+
+def main(link):
+    fake_headers = fake_useragent.UserAgent().random
     head = {'user-agent': fake_headers}
-    link = input("Link: ")
     response = request(link, head)
     soup = bs(response.text, 'html.parser')
     if soup.find_all('meta', {'property':'og:video'}):
         metaTag = soup.find_all('meta', {'property':'og:video'})
     else:
         metaTag = soup.find_all('meta', {'property':'og:image'})
-    write_file(metaTag[0]["content"])
+    file_name = write_file(metaTag[0]["content"])
+    return file_name
+
+if __name__ == '__main__':
+    main()
