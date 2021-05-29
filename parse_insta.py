@@ -25,7 +25,7 @@ def write_file(file_name):
 def main(link):
     fake_headers = fake_useragent.UserAgent().random
     head = {'user-agent': fake_headers}
-    response = request(link, head)
+    response = request("https://www.instagram.com/p/CPczZ0un6fi/?utm_source=ig_web_copy_link", head)
     soup = bs(response.text, 'html.parser')
     if soup.find_all('meta', {'property':'og:video'}):
         metaTag = soup.find_all('meta', {'property':'og:video'})
