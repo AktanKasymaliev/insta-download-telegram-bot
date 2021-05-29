@@ -22,7 +22,7 @@ def write_file(file_name):
     return full_name  
 
 
-def main(link):
+def main():
     fake_headers = fake_useragent.UserAgent().random
     head = {'user-agent': fake_headers}
     response = request("https://www.instagram.com/p/CPczZ0un6fi/?utm_source=ig_web_copy_link", head)
