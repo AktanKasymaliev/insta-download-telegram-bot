@@ -2,11 +2,12 @@ from bs4 import BeautifulSoup as bs
 from time import sleep, time
 import os, fake_useragent, datetime, requests
 from threading import Thread
+from requests.auth import HTTPBasicAuth
 
 
 
 def request(url, head=None):
-    r = requests.get(url, headers=head)
+    r = requests.get(url, headers=head, auth=HTTPBasicAuth("_kasymalyev", "Aktancraft"))
     sleep(2)
     return r
 
