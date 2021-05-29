@@ -2,12 +2,11 @@ from bs4 import BeautifulSoup as bs
 from time import sleep, time
 import os, fake_useragent, datetime, requests
 from threading import Thread
-from requests.auth import HTTPBasicAuth
 
 
 
 def request(url, head=None):
-    r = requests.get(url, headers=head, auth=HTTPBasicAuth("_kasymalyev", "Aktancraft"))
+    r = requests.get(url, headers=head)
     sleep(2)
     return r
 
@@ -23,10 +22,10 @@ def write_file(file_name):
     return full_name  
 
 
-def main():
+def main(link):
     fake_headers = fake_useragent.UserAgent().random
     head = {'user-agent': fake_headers}
-    response = request("https://www.instagram.com/p/CPczZ0un6fi/?utm_source=ig_web_copy_link", head)
+    response = request(link, head)
     soup = bs(response.text, 'html.parser')
     if soup.find_all('meta', {'property':'og:video'}):
         metaTag = soup.find_all('meta', {'property':'og:video'})

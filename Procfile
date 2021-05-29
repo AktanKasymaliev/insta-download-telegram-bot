@@ -1,1 +1,1 @@
-worker: python parse_insta.py
+worker: python bot.py
