@@ -1,9 +1,6 @@
 from bs4 import BeautifulSoup as bs
 from time import sleep, time
 import os, fake_useragent, datetime, requests
-from threading import Thread
-
-
 
 def request(url, head=None):
     r = requests.get(url, headers=head)
@@ -20,16 +17,18 @@ def write_file(file_name):
         file.write(request(file_name).content)
     return full_name  
 
+def get_meta_tag(response):
+    soup = bs(response.text, 'html.parser')
+    if soup.find_all('meta', {'property':'og:video'}):
+       return soup.find_all('meta', {'property':'og:video'})
+    else:
+       return soup.find_all('meta', {'property':'og:image'})
 
 def main(link):
     fake_headers = fake_useragent.UserAgent().random
     head = {'user-agent': fake_headers}
     response = request(link, head)
-    soup = bs(response.text, 'html.parser')
-    if soup.find_all('meta', {'property':'og:video'}):
-        metaTag = soup.find_all('meta', {'property':'og:video'})
-    else:
-        metaTag = soup.find_all('meta', {'property':'og:image'})
+    metaTag = get_meta_tag(response)
     file_name = write_file(metaTag[0]["content"])
     return file_name
 
