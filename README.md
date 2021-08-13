@@ -9,7 +9,7 @@ pip install -r requirements.txt
 ```
 create settings.ini file and insert:
 [BOT]
-token=<telegram_token>
+token=telegram_token
 ```
 
 Good luck ;)
