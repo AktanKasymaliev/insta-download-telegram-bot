@@ -19,7 +19,6 @@ def send_downloaded_file(message: types.Message):
         file_name = main(link=message.text)
         if message.text.endswith('.jpg'):
             bot.send_photo(chat_id, open(file_name, 'rb'))
-            print(file_name)
             delete_file(file_name)
         else:
             bot.send_video(chat_id, open(file_name, 'rb'))
