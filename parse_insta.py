@@ -4,7 +4,6 @@ import os, fake_useragent, datetime, requests
 
 def request(url, head=None):
     r = requests.get(url, headers=head)
-    sleep(2)
     return r
 
 def delete_file(filename):
