@@ -15,19 +15,21 @@ def write_file(url):
     full_name = f"{created_name}.{file_format}"
     with open(full_name, 'wb') as file:
         file.write(request(url).content)
-    return url
+    return url  
+
+def get_meta_tag(response):
+    soup = bs(response.text, 'html.parser')
+    if soup.find_all('meta', {'property':'og:video'}):
+       return soup.find_all('meta', {'property':'og:video'})
+    else:
+       return soup.find_all('meta', {'property':'og:image'})
 
 def main(link):
     fake_headers = fake_useragent.UserAgent().random
     head = {'user-agent': fake_headers}
     response = request(link, head)
-    soup = bs(response.text, 'html.parser')
-    if soup.find_all('meta', {'property':'og:video'}):
-        metaTag = soup.find_all('meta', {'property':'og:video'})
-    else:
-        metaTag = soup.find_all('meta', {'property':'og:image'})
+    metaTag = get_meta_tag(response)
     file_ = write_file(metaTag[0]["content"])
     return file_
-
 if __name__ == '__main__':
     main()
